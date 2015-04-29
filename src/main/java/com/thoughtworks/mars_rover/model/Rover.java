@@ -2,26 +2,37 @@ package main.java.com.thoughtworks.mars_rover.model;
 
 import java.util.concurrent.RejectedExecutionException;
 
-import main.java.com.thoughtworks.mars_rover.controller.Checkable;
+import main.java.com.thoughtworks.mars_rover.controller.World;
 
-
-public class Rover implements Movable {	
+/**
+ * NASA rover, which moves forward after checking if front is clear and turns 90° left or right.
+ * @author stephanie
+ *
+ */
+public class Rover {	
 	protected CardinalDirection facing;
 	protected Coordinate position;
-	protected Checkable world;
+	protected World world;
 	
-	public Rover(Coordinate coordinate, CardinalDirection facing, Checkable world) {
+	public Rover(Coordinate coordinate, CardinalDirection facing, World world) {
 		position = coordinate;
 		this.facing = facing;
 		this.world = world;
-	}
-	
-	public Rover(int x, int y, CardinalDirection facing) {
-		position = new Coordinate(x, y);
-		this.facing = facing;
+		registerToWorld();
 	}
 
-	@Override
+	public Rover(int x, int y, CardinalDirection facing, World world) {
+		position = new Coordinate(x, y);
+		this.facing = facing;
+		this.world = world;
+		registerToWorld();
+	}
+	
+
+	private void registerToWorld() {
+		world.registerNewObjectAtPosition(position);
+	}
+
 	public void turn90DegreesLeft() {
 		switch(facing) {
 		case NORTH:
@@ -41,7 +52,6 @@ public class Rover implements Movable {
 		}
 	}
 	
-	@Override
 	public void turn90DegreesRight() {
 		switch(facing) {
 			case NORTH:
@@ -76,29 +86,81 @@ public class Rover implements Movable {
 		}
 	}
 	
-	@Override
 	public String toString() {
 		return position.toString() + " " + facing.toString();
 	}
 
-	@Override
 	public Coordinate move() throws RejectedExecutionException {
 		Coordinate nextPosition = nextPosition(); 
-		if(world.isPositionClear(nextPosition)){
+		if(world.isVacant(nextPosition)){
 			position = nextPosition;
 			return position;
 		}
 		throw new RejectedExecutionException("Rover: " + toString() + " can not move, because next position is not vacant.");
 	}
 
-	@Override
 	public CardinalDirection getCardinalDirection() {
 		return facing;
 	}
 
-	@Override
 	public Coordinate getCoordinate() {
 		return position;
+	}
+	
+	public String executeCommandSequence(Command[] commands) {
+		for (Command command : commands) {
+			executeCommand(command);
+		}
+		return toString();
+	}
+
+	private void executeCommand(Command command) {
+		switch(command) {
+			case LEFT:
+				turn90DegreesLeft();
+				break;
+			
+			case RIGHT:
+				turn90DegreesRight();
+				break;
+			
+			case MOVE:
+				Coordinate coordinateBeforeMove = position;
+				move();
+				world.onPositionChange(coordinateBeforeMove, position);
+				break;
+	
+			default:
+				throw new UnsupportedOperationException("Undefined action for command: " + command);
+		}
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((facing == null) ? 0 : facing.hashCode());
+		result = prime * result
+				+ ((position == null) ? 0 : position.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Rover other = (Rover) obj;
+		if (facing != other.facing)
+			return false;
+		if (position == null && other.position != null) {
+				return false;
+		} else if (!position.equals(other.position))
+			return false;
+		return true;
 	}
 	
 }
