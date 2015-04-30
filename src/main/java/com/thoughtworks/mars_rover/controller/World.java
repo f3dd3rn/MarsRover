@@ -4,7 +4,13 @@ import java.util.concurrent.RejectedExecutionException;
 
 import main.java.com.thoughtworks.mars_rover.model.Coordinate;
 
-
+/**
+ * World keeps track of each position's state in its coordinate system
+ * and gives information about a position's status.
+ * 
+ * @author stephanie
+ *
+ */
 public class World {
 	private boolean[][] vacancyCoordinateSystem;
 	

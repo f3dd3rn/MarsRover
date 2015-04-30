@@ -14,6 +14,12 @@ public enum Command {
 		return abbreviation;
 	}
 
+	/**
+	 * Finds and returns Command by its abbreviation.
+	 * 
+	 * @param command: String: abbreviation of command
+	 * @return Command
+	 */
 	public static Command getByAbbreviation(String command) {
 		KeyToEnumUtil<String, Command> keyToEnum = new KeyToEnumUtil<String, Command>();
 		return keyToEnum.getByKey(command, values());

@@ -12,7 +12,11 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
-
+/**
+ * Test for main.java.com.thoughtworks.mars_rover.Main
+ * @author stephanie
+ *
+ */
 public class MainTest {
 	private final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
 	private final ByteArrayOutputStream errContent = new ByteArrayOutputStream();
@@ -51,7 +55,7 @@ public class MainTest {
 	}
 	
 	@Test
-	public void testMainWithInvalidData() {
+	public void testMainWithInvalidArgument() {
 		thrown.expect(NumberFormatException.class);
 		String[] args = {"5 S"};
 		Main.main(args);

@@ -6,6 +6,7 @@ import java.util.concurrent.RejectedExecutionException;
 
 import main.java.com.thoughtworks.mars_rover.controller.World;
 import main.java.com.thoughtworks.mars_rover.model.CardinalDirection;
+import main.java.com.thoughtworks.mars_rover.model.Command;
 import main.java.com.thoughtworks.mars_rover.model.Coordinate;
 import main.java.com.thoughtworks.mars_rover.model.Rover;
 
@@ -14,7 +15,12 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
-
+/**
+ * Test for main.java.com.thoughtworks.mars_rover.model.Rover
+ * 
+ * @author stephanie
+ *
+ */
 public class RoverTest {
 	private World world;
 	
@@ -48,7 +54,8 @@ public class RoverTest {
 	@Test
 	public void testMoveForward() {
 		Rover rover = new Rover(0, 2, CardinalDirection.SOUTH, world);
-		rover.move();
+		Command[] commands = {Command.MOVE};
+		rover.executeCommandSequence(commands);
 		assertEquals(rover.toString(),"0 1 S");
 	}
 	
@@ -56,7 +63,8 @@ public class RoverTest {
 	public void testStayInPositionToNotExceedWorldBoundaries() {
 		thrown.expect(RejectedExecutionException.class);
 		Rover rover = new Rover(0, 0, CardinalDirection.SOUTH, world);
-		rover.move();
+		Command[] commands = {Command.MOVE};
+		rover.executeCommandSequence(commands);
 	}
 	
 	@Test
@@ -64,6 +72,7 @@ public class RoverTest {
 		thrown.expect(RejectedExecutionException.class);
 		new Rover(0, 1, CardinalDirection.WEST, world);
 		Rover rover2 = new Rover(0, 0, CardinalDirection.NORTH, world);
-		rover2.move();
+		Command[] commands = {Command.MOVE};
+		rover2.executeCommandSequence(commands);
 	}
 }

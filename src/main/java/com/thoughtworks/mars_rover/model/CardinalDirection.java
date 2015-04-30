@@ -14,6 +14,12 @@ public enum CardinalDirection {
 		return this.abbreviation;
 	}
 	
+	/**
+	 * Finds and returns CardinalDirection by its abbreviation.
+	 * 
+	 * @param direction: String: abbreviation of cardinal direction
+	 * @return CardinalDirection
+	 */
 	public static CardinalDirection getByAbbreviation(String direction) {
 		KeyToEnumUtil<String, CardinalDirection> keyToEnum = new KeyToEnumUtil<String, CardinalDirection>();
 		return keyToEnum.getByKey(direction, values());

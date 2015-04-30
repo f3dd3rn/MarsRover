@@ -1,6 +1,6 @@
 package test.java.com.thoughtworks.mars_rover;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 import main.java.com.thoughtworks.mars_rover.model.CardinalDirection;
 import main.java.com.thoughtworks.mars_rover.model.Command;
 import main.java.com.thoughtworks.mars_rover.model.KeyToEnumUtil;
@@ -8,7 +8,12 @@ import main.java.com.thoughtworks.mars_rover.model.KeyToEnumUtil;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
-
+/**
+ * Test for main.java.com.thoughtworks.mars_rover.model.KeyToEnumUtil
+ * 
+ * @author stephanie
+ *
+ */
 public class KeyToEnumUtilTest {
 	@Rule
     public ExpectedException thrown = ExpectedException.none();
@@ -17,14 +22,14 @@ public class KeyToEnumUtilTest {
     public void testGetCardinalDirectionByKey() {
 		KeyToEnumUtil<String, CardinalDirection> util = new KeyToEnumUtil<String, CardinalDirection>();
 		CardinalDirection c = util.getByKey("N", CardinalDirection.values());
-		assertTrue(c.equals(CardinalDirection.NORTH));
+		assertEquals(c, CardinalDirection.NORTH);
 	}
 
 	@Test
 	public void testGetCommandByKey() {
 		KeyToEnumUtil<String, Command> util = new KeyToEnumUtil<String, Command>();
 		Command c = util.getByKey("M", Command.values());
-		assertTrue(c.equals(Command.MOVE));
+		assertEquals(c, Command.MOVE);
 	}
 	
 	@Test

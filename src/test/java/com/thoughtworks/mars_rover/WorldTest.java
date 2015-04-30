@@ -1,11 +1,9 @@
 package test.java.com.thoughtworks.mars_rover;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 import main.java.com.thoughtworks.mars_rover.controller.World;
-import main.java.com.thoughtworks.mars_rover.model.CardinalDirection;
-import main.java.com.thoughtworks.mars_rover.model.Command;
 import main.java.com.thoughtworks.mars_rover.model.Coordinate;
-import main.java.com.thoughtworks.mars_rover.model.Rover;
 
 import org.junit.After;
 import org.junit.Before;
@@ -13,7 +11,12 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
-
+/**
+ * Unit test for main.java.com.thoughtworks.mars_rover.controller.World without mocking.
+ * 
+ * @author stephanie
+ *
+ */
 public class WorldTest {
 	private World world;
 	
@@ -32,30 +35,27 @@ public class WorldTest {
 	
 	@Test
 	public void testClearPosition() {
-		boolean result = world.isVacant(new Coordinate(0, 0));
-		assertTrue(result);
+		assertTrue(world.isVacant(new Coordinate(0, 0)));
 	}
 	
 	@Test
 	public void testPositionIsBeyondBoundaries() {
-		boolean result = world.isVacant(new Coordinate(6, 0));
-		assertFalse(result);
+		assertFalse(world.isVacant(new Coordinate(6, 0)));
 	}
 	
 	@Test
-	public void testRoverRegistersOnCreation() {
-		Rover rover = new Rover(0, 0, CardinalDirection.WEST, world);
-		boolean result = world.isVacant(rover.getCoordinate());
-		assertFalse(result);
+	public void testRegisterNewObjectAtPosition() {
+		Coordinate coordinate = new Coordinate(2, 2);
+		world.registerNewObjectAtPosition(coordinate);
+		assertFalse(world.isVacant(coordinate));
 	}
 	
 	@Test
-	public void testRoverInformsWorldAboutChangedPosition() {
-		Coordinate coordinate = new Coordinate(0,0);
-		Rover rover = new Rover(coordinate, CardinalDirection.EAST, world);
-		Command[] commands = {Command.MOVE};
-		rover.executeCommandSequence(commands);
-		assertFalse(world.isVacant(rover.getCoordinate()));
-		assertTrue(world.isVacant(coordinate));
+	public void testOnPositionChange() {
+		Coordinate previousCoordinate = new Coordinate(0,0);
+		Coordinate currentCoordinate = new Coordinate(0,1);
+		world.onPositionChange(previousCoordinate, currentCoordinate);
+		assertFalse(world.isVacant(currentCoordinate));
+		assertTrue(world.isVacant(previousCoordinate));
 	}
 }

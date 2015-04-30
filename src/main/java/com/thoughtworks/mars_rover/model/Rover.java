@@ -6,6 +6,7 @@ import main.java.com.thoughtworks.mars_rover.controller.World;
 
 /**
  * NASA rover, which moves forward after checking if front is clear and turns 90° left or right.
+ * 
  * @author stephanie
  *
  */
@@ -71,7 +72,12 @@ public class Rover {
 		}
 	}
 	
-	protected Coordinate nextPosition() {
+	/**
+	 * Calculates its next position depending on its cardinal direction.
+	 * 
+	 * @return Coordinate
+	 */
+	protected Coordinate calculateNextPosition() {
 		switch(facing) {
 			case NORTH:
 				return new Coordinate(position.x, position.y+1);
@@ -85,18 +91,14 @@ public class Rover {
 				throw new UnsupportedOperationException("Unable to move - unknown operation for cardinal direction: " + facing);
 		}
 	}
-	
-	public String toString() {
-		return position.toString() + " " + facing.toString();
-	}
 
-	public Coordinate move() throws RejectedExecutionException {
-		Coordinate nextPosition = nextPosition(); 
+	private void move() throws RejectedExecutionException {
+		Coordinate nextPosition = calculateNextPosition(); 
 		if(world.isVacant(nextPosition)){
 			position = nextPosition;
-			return position;
+		} else {
+			throw new RejectedExecutionException("Rover: " + toString() + " can not move, because next position: " + nextPosition + " is not vacant.");
 		}
-		throw new RejectedExecutionException("Rover: " + toString() + " can not move, because next position is not vacant.");
 	}
 
 	public CardinalDirection getCardinalDirection() {
@@ -161,6 +163,11 @@ public class Rover {
 		} else if (!position.equals(other.position))
 			return false;
 		return true;
+	}
+	
+	@Override
+	public String toString() {
+		return position.toString() + " " + facing.toString();
 	}
 	
 }

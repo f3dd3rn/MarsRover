@@ -7,7 +7,12 @@ import main.java.com.thoughtworks.mars_rover.model.CardinalDirection;
 import main.java.com.thoughtworks.mars_rover.model.Command;
 import main.java.com.thoughtworks.mars_rover.model.KeyToEnumUtil;
 import main.java.com.thoughtworks.mars_rover.model.Rover;
-
+/**
+ * Main checks input, initializes application and forwards input.
+ * 
+ * @author stephanie
+ *
+ */
 public class Main {
 	
 	public static void main(String[] args) {
